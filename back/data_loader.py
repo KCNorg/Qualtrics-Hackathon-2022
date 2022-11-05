@@ -1,5 +1,6 @@
 import json
 import pandas as pd
+import random
 
 
 def get_json_from_filename(filename):
@@ -41,5 +42,23 @@ def get_dataframe_from_json(filename='airline_passenger_satisfaction_dataset.jso
     return parse_to_dataframe(jdata)
 
 
+def add_airlines(df):
+    airlines = ["Qatar Airways", "Singapore Airlines", "Emirates", "ANA All Nippon Airways", "Qantas Airways", "Japan Airlines", "Turkish Airlines", "Air France", "Korean Air", "Swiss International Air Lines"]
+    N = len(airlines)
+
+    airlines_vals = []
+    for i in range(N):
+        _N = df.shape[0]//N if i < N-1 else df.shape[0]-len(airlines_vals)
+        airlines_vals += [airlines[i] for _ in range(_N)]
+
+    random.shuffle(airlines_vals)
+    df["Airline"] = airlines_vals
+    df = pd.get_dummies(data=df, columns=["Airline"])
+
+    return df
+
+
 if __name__ == '__main__':
-    print(get_dataframe_from_json())
+    X = get_dataframe_from_json()
+    X = add_airlines(X)
+    print(X.info())
