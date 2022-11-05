@@ -36,7 +36,7 @@ info = {
     },
     "type": {
         "name": "Passenger Type",
-        "values": ["Loyal customer, Disloyal Customer"]
+        "values": ["Loyal customer", "Disloyal Customer"]
     },
     "age": {
         "name": "Age",
