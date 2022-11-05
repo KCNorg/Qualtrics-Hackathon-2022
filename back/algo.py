@@ -1,15 +1,31 @@
+
 from data_loader import get_dataframe_from_json
 import pandas as pd
 from constans import inv_reviews, inv_info
+from constans import reverse_parser
+# from back.data_loader import get_dataframe_from_json
 
 
-def calculate_weight(row, parameter, values):
-    return values[str(row[parameter])]
+def calculate_result(row, problem, satisfaction_threshold):
+    return 1 if satisfaction_threshold > row[problem] else 0
 
 
-def calculate_result(row, parameter, satisfactionThreshold):
-    return row["weight"] * (1 if satisfactionThreshold > row[parameter] else 0)
-    # return row["weight"] * max(satisfactionThreshold - row[parameter], 0)
+def calculate_score(df, params, problems, satisfaction_threshold):
+    query_string = ""
+
+    for param in params:
+        query_string += reverse_parser[param] + "=='" + param + "'and "
+
+    query_string = query_string[:-4]
+    df_queried = df.query(query_string)
+
+    score = 0
+
+    for problem in problems:
+        score += sum(df_queried.apply(lambda row: calculate_result(row, problem, satisfaction_threshold), axis=1))
+
+    return score
+
 
 
 def parse_info(info):
@@ -27,9 +43,7 @@ def get_filtered_df(params):
     df = df.filter(items=[inv_reviews[x] for x in review] + list(info.keys()))
 
     for k, v in info.items():
-        print(k, v)
         df = df[df[k].isin(v)]
-        print(df)
 
     return df
 
@@ -65,3 +79,11 @@ def get_filtered_df(params):
 #               }
 #
 #     print(get_filtered_df(params))
+# =======
+# params = ["Male", "Business"]
+# problems = ["wifiService", "onboardService"]
+# satisfaction_threshold = 3
+#
+# df = get_dataframe_from_json()
+# calculate_score(df, params, problems, satisfaction_threshold)
+# >>>>>>> 5e8089b327056e0d297e27cffab71cd616a4b545
