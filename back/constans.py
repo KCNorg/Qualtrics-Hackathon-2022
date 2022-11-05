@@ -17,6 +17,25 @@ reviews = {
     "arrivalDelayInMinutes": "Arrival Delay In Minutes",
 }
 
+reviews_reverse = {
+    "Wifi Service": "wifiService",
+    "Time Convenient": "timeConvenient",
+    "Booking Ease": "bookingEase",
+    "Gate Location": "gateLocation",
+    "Food": "food",
+    "Boarding": "boarding",
+    "Seat Comfort": "seatComfort",
+    "Entertainment": "entertainment",
+    "Onboard Service": "onboardService",
+    "Leg Room Service": "legRoomService",
+    "Baggage Handling": "baggageHandling",
+    "CheckinService": "checkinService",
+    "Inflight": "inflightService",
+    "Cleanliness": "cleanliness",
+    "Departure Delay In Minutes": "departureDelayInMinutes",
+    "Arrival Delay In Minutes": "arrivalDelayInMinutes",
+}
+
 info = {
     "travelType": {
         "name": "Travel Type",
@@ -44,6 +63,25 @@ info = {
     }
 }
 
+reverse_parser = {
+    "Personal Travel": "travelType",
+    "Business Travel": "travelType",
+    "Business": "travelClass",
+    "Eco": "travelClass",
+    "Eco Plus": "travelClass",
+    "Short": "travelDistance",
+    "Middle": "travelDistance",
+    "Long": "travelDistance",
+    "Female": "gender",
+    "Male": "gender",
+    "Loyal customer": "type",
+    "Disloyal Customer": "type",
+    "Child": "Age",
+    "Young Adult": "Age",
+    "Mid Adult": "Age",
+    "Elder": "Age"
+}
+
 
 def age_to_group(age):
     if age < 18:
@@ -54,6 +92,7 @@ def age_to_group(age):
         return "mid adult"
     else:
         return "elder"
+
 
 def flight_distance_to_group(flight_distance):
     if flight_distance < 500:
