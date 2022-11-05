@@ -17,6 +17,8 @@ reviews = {
     "arrivalDelayInMinutes": "Arrival Delay In Minutes",
 }
 
+inv_reviews = {v: k for k, v in reviews.items()}
+
 info = {
     "travelType": {
         "name": "Travel Type",
@@ -31,12 +33,12 @@ info = {
         "values": ["Short", "Middle", "Long"]
     },
     "gender": {
-        "name": "Name",
+        "name": "Gender",
         "values": ["Female", "Male"]
     },
     "type": {
         "name": "Passenger Type",
-        "values": ["Loyal customer, Disloyal Customer"]
+        "values": ["Loyal Customer", "Disloyal Customer"]
     },
     "age": {
         "name": "Age",
@@ -45,20 +47,30 @@ info = {
 }
 
 
+def revert_name(d, name):
+    new_d = d.copy()
+    new_d['name'] = name
+    return new_d
+
+
+inv_info = {v['name']: revert_name(v, k) for k, v in info.items()}
+
+
 def age_to_group(age):
     if age < 18:
-        return "child"
+        return "Child"
     elif age < 35:
-        return "young adult"
+        return "Young adult"
     elif age < 50:
-        return "mid adult"
+        return "Mid adult"
     else:
-        return "elder"
+        return "Elder"
+
 
 def flight_distance_to_group(flight_distance):
     if flight_distance < 500:
-        return "short"
+        return "Short"
     elif flight_distance < 1750:
-        return "middle"
+        return "Middle"
     else:
-        return "long"
+        return "Long"

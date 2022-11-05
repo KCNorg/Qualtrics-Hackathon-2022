@@ -25,11 +25,12 @@ def get_json_from_filename(filename):
 def parse_to_dataframe(data: list[dict]):
     df = pd.DataFrame(data)
     for col in df.columns:
-        print(df[col][0])
         if (str(df[col][0][0]).isdigit()):
             df[col] = pd.to_numeric(df[col])
-    print(df.info())
+
     df['arrivalDelayInMinutes'].fillna(round(df['arrivalDelayInMinutes'].mean(), 1), inplace=True)
+    df.loc[df['travelType'] == 'Business travel', 'travelType'] = 'Business Travel'
+    df.loc[df['type'] == 'disloyal Customer', 'type'] = 'Disloyal Customer'
 
     return df
 
@@ -68,7 +69,8 @@ def replace_age_with_age_groups(df):
 
 
 def replace_flight_distance(df):
-    flight_distance_groups_values = [flight_distance_to_group(flight_distance) for flight_distance in df["travelDistance"]]
+    flight_distance_groups_values = [flight_distance_to_group(flight_distance) for flight_distance in
+                                     df["travelDistance"]]
     df["travelDistance"] = flight_distance_groups_values
 
     return df

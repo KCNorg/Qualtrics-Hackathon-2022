@@ -1,5 +1,6 @@
-from back.data_loader import get_dataframe_from_json
+from data_loader import get_dataframe_from_json
 import pandas as pd
+from constans import inv_reviews, inv_info
 
 
 def calculate_weight(row, parameter, values):
@@ -11,32 +12,56 @@ def calculate_result(row, parameter, satisfactionThreshold):
     # return row["weight"] * max(satisfactionThreshold - row[parameter], 0)
 
 
-def algo(params, satisfactionThreshold):
+def parse_info(info):
+    result = dict()
+    for d in info:
+        result[inv_info[d['name']]['name']] = d['values']
+    print(result)
+
+    return result
+
+
+def get_filtered_df(params):
     df = get_dataframe_from_json()
-    X = df.copy()
-    X["weight"] = 0
+    info, review = parse_info(params['info']), params['review']
+    df = df.filter(items=[inv_reviews[x] for x in review] + list(info.keys()))
 
-    # print(XCopy["weight"])
+    for k, v in info.items():
+        print(k, v)
+        df = df[df[k].isin(v)]
+        print(df)
 
-    example_input_weights = params[0]
-    example_input_problems = params[1]
-
-    for key in example_input_weights.keys():
-        X["weight"] += X.apply(lambda row: calculate_weight(row, key, example_input_weights[key]), axis=1)
-
-    # print(XCopy["weight"])
-    # print(sum(XCopy["weight"]))
-
-    res = pd.DataFrame()
-    # print(res)
-    for problem in example_input_problems:
-        res[problem] = X.apply(lambda row: calculate_result(row, problem, satisfactionThreshold), axis=1)
-
-    # print(res)
-    # print(sum(res["wifiService"]))
+    return df
 
 
-params = [{"gender": {"Female": 2, "Male": 1}, "travelClass": {"Eco Plus": 0, "Eco": 1, "Business": 4}},
-          ["wifiService"]]
-
-algo(params, 3)
+# if __name__ == '__main__':
+#     params = {'review': ['Food', 'Boarding'],
+#               'info': [
+#                   {
+#                       "name": "Travel Type",
+#                       "values": ["Personal Travel"]
+#                   },
+#                   {
+#                       "name": "Travel Class",
+#                       "values": ["Eco", "Eco Plus"]
+#                   },
+#                   {
+#                       "name": "Travel Distance",
+#                       "values": ["Middle", "Long"]
+#                   },
+#                   {
+#                       "name": "Gender",
+#                       "values": ["Female", "Male"]
+#                   },
+#                   {
+#                       "name": "Passenger Type",
+#                       "values": ["Loyal Customer", "Disloyal Customer"]
+#                   },
+#                   {
+#                       "name": "Age",
+#                       "values": ["Child", "Young Adult", "Mid Adult", "Elder"]
+#                   }
+#               ]
+#               }
+#
+#     print(get_filtered_df(params))
