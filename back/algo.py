@@ -1,9 +1,9 @@
-
 from data_loader import get_dataframe_from_json
 import pandas as pd
 from constans import inv_reviews, inv_info
 from constans import reverse_parser
 # from back.data_loader import get_dataframe_from_json
+import itertools
 
 
 def calculate_result(row, problem, satisfaction_threshold):
@@ -27,7 +27,6 @@ def calculate_score(df, params, problems, satisfaction_threshold):
     return score
 
 
-
 def parse_info(info):
     result = dict()
     for d in info:
@@ -48,37 +47,43 @@ def get_filtered_df(params):
     return df
 
 
-# if __name__ == '__main__':
-#     params = {'review': ['Food', 'Boarding'],
-#               'info': [
-#                   {
-#                       "name": "Travel Type",
-#                       "values": ["Personal Travel"]
-#                   },
-#                   {
-#                       "name": "Travel Class",
-#                       "values": ["Eco", "Eco Plus"]
-#                   },
-#                   {
-#                       "name": "Travel Distance",
-#                       "values": ["Middle", "Long"]
-#                   },
-#                   {
-#                       "name": "Gender",
-#                       "values": ["Female", "Male"]
-#                   },
-#                   {
-#                       "name": "Passenger Type",
-#                       "values": ["Loyal Customer", "Disloyal Customer"]
-#                   },
-#                   {
-#                       "name": "Age",
-#                       "values": ["Child", "Young Adult", "Mid Adult", "Elder"]
-#                   }
-#               ]
-#               }
-#
-#     print(get_filtered_df(params))
+def get_all_combinations(params):
+    lists = [info['values'] for info in params['info']]
+    lists = list(filter(lambda x: len(x) != 0, lists))
+    return list(itertools.product(*lists))
+
+
+if __name__ == '__main__':
+    params = {'review': ['Food', 'Boarding'],
+              'info': [
+                  {
+                      "name": "Travel Type",
+                      "values": ["Personal Travel"]
+                  },
+                  {
+                      "name": "Travel Class",
+                      "values": ["Eco", "Eco Plus"]
+                  },
+                  {
+                      "name": "Travel Distance",
+                      "values": ["Middle", "Long"]
+                  },
+                  {
+                      "name": "Gender",
+                      "values": ["Female", "Male"]
+                  },
+                  {
+                      "name": "Passenger Type",
+                      "values": ["Loyal Customer", "Disloyal Customer"]
+                  },
+                  {
+                      "name": "Age",
+                      "values": ["Child", "Young Adult", "Mid Adult", "Elder"]
+                  }
+              ]
+              }
+
+    print(get_all_combinations(params))
 # =======
 # params = ["Male", "Business"]
 # problems = ["wifiService", "onboardService"]

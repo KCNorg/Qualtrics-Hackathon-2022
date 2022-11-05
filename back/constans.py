@@ -77,7 +77,7 @@ reverse_parser = {
     "Long": "travelDistance",
     "Female": "gender",
     "Male": "gender",
-    "Loyal customer": "type",
+    "Loyal Customer": "type",
     "Disloyal Customer": "type",
     "Child": "Age",
     "Young Adult": "Age",
