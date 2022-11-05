@@ -43,6 +43,7 @@ def get_dataframe_from_json(filename='airline_passenger_satisfaction_dataset.jso
     df = parse_to_dataframe(jdata)
     df = add_airlines(df)
     df = replace_age_with_age_groups(df)
+    df = replace_flight_distance(df)
 
     return df
 
@@ -65,7 +66,7 @@ def add_airlines(df):
 
 
 def replace_age_with_age_groups(df):
-    def age_to_age_group(age):
+    def age_to_group(age):
         if age < 18:
             return "child"
         elif age < 35:
@@ -75,12 +76,27 @@ def replace_age_with_age_groups(df):
         else:
             return "elder"
 
-    age_groups_values = [age_to_age_group(age) for age in df["age"]]
+    age_groups_values = [age_to_group(age) for age in df["age"]]
     df["age"] = age_groups_values
     df = pd.get_dummies(data=df, columns=["age"])
 
     return df
 
+
+def replace_flight_distance(df):
+    def flight_distance_to_group(flight_distance):
+        if flight_distance < 500:
+            return "short"
+        elif flight_distance < 1750:
+            return "middle"
+        else:
+            return "long"
+
+    flight_distance_groups_values = [flight_distance_to_group(flight_distance) for flight_distance in df["travelDistance"]]
+    df["travelDistance"] = flight_distance_groups_values
+    df = pd.get_dummies(data=df, columns=["travelDistance"])
+
+    return df
 
 def scale_all(df):
     scaler = MinMaxScaler()
