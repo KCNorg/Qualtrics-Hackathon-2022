@@ -23,18 +23,14 @@ def get_json_from_filename(filename):
 
 
 def parse_to_dataframe(data: list[dict]):
-    travel_classes = {'Eco Plus': 0, "Eco": 1, "Business": 2}
     df = pd.DataFrame(data)
-    df.satisfaction = [1 if x == "satisfied" else 0 for x in df.satisfaction]
-    df.travelType = [1 if "Business" in x else 0 for x in df.travelType]
-    df.gender = [1 if x == "Male" else 0 for x in df.gender]
-    df.type = [1 if "Loyal" in x else 0 for x in df.type]
-    df.travelClass = [travel_classes[x] for x in df.travelClass]
-
     for col in df.columns:
-        df[col] = pd.to_numeric(df[col])
-
+        print(df[col][0])
+        if (str(df[col][0][0]).isdigit()):
+            df[col] = pd.to_numeric(df[col])
+    print(df.info())
     df['arrivalDelayInMinutes'].fillna(round(df['arrivalDelayInMinutes'].mean(), 1), inplace=True)
+
     return df
 
 
@@ -60,7 +56,6 @@ def add_airlines(df):
 
     random.shuffle(airlines_vals)
     df["airline"] = airlines_vals
-    df = pd.get_dummies(data=df, columns=["airline"])
 
     return df
 
@@ -78,7 +73,6 @@ def replace_age_with_age_groups(df):
 
     age_groups_values = [age_to_group(age) for age in df["age"]]
     df["age"] = age_groups_values
-    df = pd.get_dummies(data=df, columns=["age"])
 
     return df
 
@@ -94,20 +88,11 @@ def replace_flight_distance(df):
 
     flight_distance_groups_values = [flight_distance_to_group(flight_distance) for flight_distance in df["travelDistance"]]
     df["travelDistance"] = flight_distance_groups_values
-    df = pd.get_dummies(data=df, columns=["travelDistance"])
 
     return df
-
-def scale_all(df):
-    scaler = MinMaxScaler()
-    scaler.fit(df)
-    X = scaler.transform(df)
-
-    return X
 
 
 if __name__ == '__main__':
     df = get_dataframe_from_json()
     print(df.info())
-    X = scale_all(df)
-    print(X)
+    print(df.head())
