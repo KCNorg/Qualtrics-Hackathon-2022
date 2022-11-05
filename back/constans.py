@@ -79,10 +79,10 @@ reverse_parser = {
     "Male": "gender",
     "Loyal Customer": "type",
     "Disloyal Customer": "type",
-    "Child": "Age",
-    "Young Adult": "Age",
-    "Mid Adult": "Age",
-    "Elder": "Age"
+    "Child": "age",
+    "Young Adult": "age",
+    "Mid Adult": "age",
+    "Elder": "age"
 }
 
 

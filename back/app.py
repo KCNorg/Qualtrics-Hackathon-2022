@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request
 from constans import reviews, info
-
+from algo import get_results
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -16,10 +16,8 @@ def hello_world():  # put application's code here
 def get_types():
     if request.method == 'POST':
         jdata = request.get_json()
-        print(jdata)
-        return "kocham js oooo"
-        # result = get_result_from_kuba(jdata)
-        # return result
+        result = get_results(jdata)
+        return jsonify(result)
     elif request.method == 'GET':
         jdata = dict()
         jdata['review'] = list(reviews.values())
