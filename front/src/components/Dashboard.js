@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { sendResult } from "../apis/backend";
 
 const Dashboard = () => {
   const [types, setTypes] = useState({
@@ -134,9 +135,11 @@ const Dashboard = () => {
     }
   };
 
-  const submitData = (e) => {
+  const submitData = async (e) => {
     e.preventDefault();
-    setResult("new result");
+    const response = await sendResult(chosenTypes);
+    console.log(result);
+    setResult(response);
     setSubmitted(true);
   };
 
@@ -185,7 +188,12 @@ const Dashboard = () => {
           </a>
         </div>
       )}
-      {submitted && <div>{result}</div>}
+      {submitted && (
+        <div className={"dashboard-result"}>
+          <h1>Your results</h1>
+          <h2>{result}</h2>
+        </div>
+      )}
     </>
   );
 };

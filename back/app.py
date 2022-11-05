@@ -16,6 +16,8 @@ def hello_world():  # put application's code here
 def get_types():
     if request.method == 'POST':
         jdata = request.get_json()
+        print(jdata)
+        return "kocham js oooo"
         # result = get_result_from_kuba(jdata)
         # return result
     elif request.method == 'GET':
