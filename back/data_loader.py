@@ -39,21 +39,23 @@ def parse_to_dataframe(data: list[dict]):
 
 def get_dataframe_from_json(filename='airline_passenger_satisfaction_dataset.json'):
     jdata = get_json_from_filename(filename)
-    return parse_to_dataframe(jdata)
+    df = parse_to_dataframe(jdata)
+    return add_airlines(df)
 
 
 def add_airlines(df):
-    airlines = ["Qatar Airways", "Singapore Airlines", "Emirates", "ANA All Nippon Airways", "Qantas Airways", "Japan Airlines", "Turkish Airlines", "Air France", "Korean Air", "Swiss International Air Lines"]
+    airlines = ["Qatar Airways", "Singapore Airlines", "Emirates", "ANA All Nippon Airways", "Qantas Airways",
+                "Japan Airlines", "Turkish Airlines", "Air France", "Korean Air", "Swiss International Air Lines"]
     N = len(airlines)
 
     airlines_vals = []
     for i in range(N):
-        _N = df.shape[0]//N if i < N-1 else df.shape[0]-len(airlines_vals)
+        _N = df.shape[0] // N if i < N - 1 else df.shape[0] - len(airlines_vals)
         airlines_vals += [airlines[i] for _ in range(_N)]
 
     random.shuffle(airlines_vals)
     df["Airline"] = airlines_vals
-    df = pd.get_dummies(data=df, columns=["Airline"])
+    df = pd.get_dummies(data=df, columns=["airline"])
 
     return df
 
