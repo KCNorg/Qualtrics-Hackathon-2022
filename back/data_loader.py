@@ -1,7 +1,7 @@
 import json
 import pandas as pd
 import random
-from sklearn.preprocessing import MinMaxScaler
+from constans import age_to_group, flight_distance_to_group
 
 
 def get_json_from_filename(filename):
@@ -61,16 +61,6 @@ def add_airlines(df):
 
 
 def replace_age_with_age_groups(df):
-    def age_to_group(age):
-        if age < 18:
-            return "child"
-        elif age < 35:
-            return "young adult"
-        elif age < 50:
-            return "mid adult"
-        else:
-            return "elder"
-
     age_groups_values = [age_to_group(age) for age in df["age"]]
     df["age"] = age_groups_values
 
@@ -78,14 +68,6 @@ def replace_age_with_age_groups(df):
 
 
 def replace_flight_distance(df):
-    def flight_distance_to_group(flight_distance):
-        if flight_distance < 500:
-            return "short"
-        elif flight_distance < 1750:
-            return "middle"
-        else:
-            return "long"
-
     flight_distance_groups_values = [flight_distance_to_group(flight_distance) for flight_distance in df["travelDistance"]]
     df["travelDistance"] = flight_distance_groups_values
 

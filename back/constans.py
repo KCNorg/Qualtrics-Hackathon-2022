@@ -43,3 +43,22 @@ info = {
         "values": ["Child", "Young Adult", "Mid Adult", "Elder"]
     }
 }
+
+
+def age_to_group(age):
+    if age < 18:
+        return "child"
+    elif age < 35:
+        return "young adult"
+    elif age < 50:
+        return "mid adult"
+    else:
+        return "elder"
+
+def flight_distance_to_group(flight_distance):
+    if flight_distance < 500:
+        return "short"
+    elif flight_distance < 1750:
+        return "middle"
+    else:
+        return "long"
