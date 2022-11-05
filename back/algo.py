@@ -51,41 +51,18 @@ def get_all_combinations(params):
     return list(itertools.product(*lists))
 
 
-if __name__ == '__main__':
-    params = {'review': ['Food', 'Boarding'],
-              'info': [
-                  {
-                      "name": "Travel Type",
-                      "values": ["Personal Travel"]
-                  },
-                  {
-                      "name": "Travel Class",
-                      "values": ["Eco", "Eco Plus"]
-                  },
-                  {
-                      "name": "Travel Distance",
-                      "values": ["Middle", "Long"]
-                  },
-                  {
-                      "name": "Gender",
-                      "values": ["Female", "Male"]
-                  },
-                  {
-                      "name": "Passenger Type",
-                      "values": ["Loyal Customer", "Disloyal Customer"]
-                  },
-                  {
-                      "name": "Age",
-                      "values": ["Child", "Young Adult", "Mid Adult", "Elder"]
-                  }
-              ]
-              }
+def get_results(params):
     df = get_filtered_df(params)
     # print(get_all_combinations(params))
-    test = calculate_score(df, get_all_combinations(params), params["review"], 3)
-    print(test)
-    print(sorted(test)[:10:-1])
+    result = calculate_score(df, get_all_combinations(params), params["review"], 3)
+    result = sorted(result)[:10:-1]
 
+    str_result = ['TOP 10 most dissatisfied groups']
+
+    for i in range(len(result)):
+        str_result.append(f'{i+1}. {result[i][3]}')
+
+    return str_result
 # =======
 # params = ["Male", "Business"]
 # problems = ["wifiService", "onboardService"]
