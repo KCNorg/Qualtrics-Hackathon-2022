@@ -1,6 +1,7 @@
 import json
 import pandas as pd
 import random
+from sklearn.preprocessing import MinMaxScaler
 
 
 def get_json_from_filename(filename):
@@ -40,7 +41,10 @@ def parse_to_dataframe(data: list[dict]):
 def get_dataframe_from_json(filename='airline_passenger_satisfaction_dataset.json'):
     jdata = get_json_from_filename(filename)
     df = parse_to_dataframe(jdata)
-    return add_airlines(df)
+    df = add_airlines(df)
+    df = replace_age_with_age_groups(df)
+
+    return df
 
 
 def add_airlines(df):
@@ -54,13 +58,40 @@ def add_airlines(df):
         airlines_vals += [airlines[i] for _ in range(_N)]
 
     random.shuffle(airlines_vals)
-    df["Airline"] = airlines_vals
+    df["airline"] = airlines_vals
     df = pd.get_dummies(data=df, columns=["airline"])
 
     return df
 
 
+def replace_age_with_age_groups(df):
+    def age_to_age_group(age):
+        if age < 18:
+            return "child"
+        elif age < 35:
+            return "young adult"
+        elif age < 50:
+            return "mid adult"
+        else:
+            return "elder"
+
+    age_groups_values = [age_to_age_group(age) for age in df["age"]]
+    df["age"] = age_groups_values
+    df = pd.get_dummies(data=df, columns=["age"])
+
+    return df
+
+
+def scale_all(df):
+    scaler = MinMaxScaler()
+    scaler.fit(df)
+    X = scaler.transform(df)
+
+    return X
+
+
 if __name__ == '__main__':
-    X = get_dataframe_from_json()
-    X = add_airlines(X)
-    print(X.info())
+    df = get_dataframe_from_json()
+    print(df.info())
+    X = scale_all(df)
+    print(X)
