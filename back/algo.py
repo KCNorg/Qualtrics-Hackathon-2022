@@ -1,37 +1,35 @@
 from data_loader import get_dataframe_from_json
 import pandas as pd
-from constans import inv_reviews, inv_info
+from constans import inv_reviews, inv_info, reviews_reverse
 from constans import reverse_parser
-# from back.data_loader import get_dataframe_from_json
 import itertools
 
 
 def calculate_result(row, problem, satisfaction_threshold):
-    return 1 if satisfaction_threshold > row[problem] else 0
+    return 1 if satisfaction_threshold >= row[problem] else 0
 
 
-def calculate_score(df, params, problems, satisfaction_threshold):
-    query_string = ""
+def calculate_score(df, params_list, problems, satisfaction_threshold):
+    score_result = []
+    for params in params_list:
+        query_string = ""
+        for param in params:
+            query_string += reverse_parser[param] + "=='" + param + "'and "
+        query_string = query_string[:-4]
+        df_queried = df.query(query_string)
 
-    for param in params:
-        query_string += reverse_parser[param] + "=='" + param + "'and "
-
-    query_string = query_string[:-4]
-    df_queried = df.query(query_string)
-
-    score = 0
-
-    for problem in problems:
-        score += sum(df_queried.apply(lambda row: calculate_result(row, problem, satisfaction_threshold), axis=1))
-
-    return score
+        score = 0
+        for problem in problems:
+            score += sum(df_queried.apply(lambda row: calculate_result(row, reviews_reverse[problem], satisfaction_threshold), axis=1))
+        if df_queried.shape[0] > 0:
+            score_result.append((score, df_queried.shape[0], params))
+    return score_result
 
 
 def parse_info(info):
     result = dict()
     for d in info:
         result[inv_info[d['name']]['name']] = d['values']
-    print(result)
 
     return result
 
@@ -82,8 +80,12 @@ if __name__ == '__main__':
                   }
               ]
               }
+    df = get_filtered_df(params)
+    # print(get_all_combinations(params))
+    test = calculate_score(df, get_all_combinations(params), params["review"], 3)
+    print(test)
+    print(sorted(test)[:10:-1])
 
-    print(get_all_combinations(params))
 # =======
 # params = ["Male", "Business"]
 # problems = ["wifiService", "onboardService"]
