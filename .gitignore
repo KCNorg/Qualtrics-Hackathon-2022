@@ -130,3 +130,9 @@ dmypy.json
 
 # Idea
 .idea/
+
+# dependencies
+front/node_modules
+
+# production
+front/build
