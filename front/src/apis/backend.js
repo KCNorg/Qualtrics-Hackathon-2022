@@ -8,7 +8,7 @@ export const sendResult = async (result) => {
     },
     body: JSON.stringify(result),
   });
-  return await res.text();
+  return await res.json();
 };
 
 export default { sendResult };

@@ -33,7 +33,7 @@ reviews_reverse = {
     "Leg Room Service": "legRoomService",
     "Baggage Handling": "baggageHandling",
     "CheckinService": "checkinService",
-    "Inflight": "inflightService",
+    "Inflight Service": "inflightService",
     "Cleanliness": "cleanliness",
     "Departure Delay In Minutes": "departureDelayInMinutes",
     "Arrival Delay In Minutes": "arrivalDelayInMinutes",

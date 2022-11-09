@@ -35,13 +35,13 @@ const Home = () => {
           </div>
           <div className="carousel-inner" style={{ borderRadius: "20px" }}>
             <div className="carousel-item active">
-              <img src={pic1} className="d-block w-100" alt="..." />
+              <img src={pic2} className="d-block w-100" alt="..." />
               <div className="carousel-caption d-none d-md-block">
                 <h5>Analyse thousands reviews in a click of a button</h5>
               </div>
             </div>
             <div className="carousel-item" data-bs-interval="5000">
-              <img src={pic2} className="d-block w-100" alt="..." />
+              <img src={pic1} className="d-block w-100" alt="..." />
               <div className="carousel-caption d-none d-md-block">
                 <h5>See your customers needs</h5>
               </div>

@@ -20,7 +20,9 @@ def calculate_score(df, params_list, problems, satisfaction_threshold):
 
         score = 0
         for problem in problems:
-            score += sum(df_queried.apply(lambda row: calculate_result(row, reviews_reverse[problem], satisfaction_threshold), axis=1))
+            val = df_queried.apply(lambda row: calculate_result(row, reviews_reverse[problem], satisfaction_threshold), axis=1)
+            if (df_queried.shape[0] != 0):
+                score = sum(val)
         if df_queried.shape[0] > 0:
             score_result.append((score, df_queried.shape[0], params))
     return score_result
@@ -57,10 +59,10 @@ def get_results(params):
     result = calculate_score(df, get_all_combinations(params), params["review"], 3)
     result = sorted(result)[:10:-1]
 
-    str_result = ['TOP 10 most dissatisfied groups']
+    str_result = []
 
     for i in range(len(result)):
-        str_result.append(f'{i+1}. {result[i][3]}')
+        str_result.append(f'{i+1}. {result[i][2]}')
 
     return str_result
 # =======

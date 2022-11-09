@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { sendResult } from "../apis/backend";
 
 const Dashboard = () => {
@@ -190,8 +190,8 @@ const Dashboard = () => {
       )}
       {submitted && (
         <div className={"dashboard-result"}>
-          <h1>Your results</h1>
-          <h2>{result}</h2>
+          <h1>Most dissatisfied groups</h1>
+          <pre>{JSON.stringify(result, null, 2)}</pre>
         </div>
       )}
     </>
